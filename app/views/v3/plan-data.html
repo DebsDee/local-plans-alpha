@@ -67,17 +67,20 @@
   classes:"table-size",
   firstCellIsHeader: false,
   head: [
+
     {
       text: "Month"
     },
+      {
+      text: "Submission"
+    },
+       {
+      text: "Examination"
+    },  
     {
       text: "Adoption"
-    },
-    {
-      text: "Examination"
-    },    {
-      text: "Submission"
     }
+ 
   ],
   rows: [
     [
@@ -85,27 +88,28 @@
         text: "January"
       },
       {
-        html: "<strong class='govuk-tag govuk-tag--blue'>4</strong>"
+        html: "<strong class='govuk-tag govuk-tag--yellow'>5</strong>"
       },
       {
         html: "<strong class='govuk-tag govuk-tag--orange'>12</strong>"
       },
       {
-        html: "<strong class='govuk-tag govuk-tag--yellow'>5</strong>"
+        html: "<strong class='govuk-tag govuk-tag--blue'>4</strong>"
       }
+      
     ],
     [
       {
         text: "February"
       },
       {
-        html: "<strong class='govuk-tag govuk-tag--blue'>0</strong>"
+        html: "<strong class='govuk-tag govuk-tag--yellow'>11</strong>"
       },
-      {
+       {
         html: "<strong class='govuk-tag govuk-tag--orange'>2</strong>"
       },
       {
-        html: "<strong class='govuk-tag govuk-tag--yellow'>11</strong>"
+        html: "<strong class='govuk-tag govuk-tag--blue'>0</strong>"
       }
     ],
     [
@@ -113,13 +117,13 @@
         text: "March"
       },
       {
-        html: "<strong class='govuk-tag govuk-tag--blue'>14</strong>"
+        html: "<strong class='govuk-tag govuk-tag--yellow'>0</strong>"
       },
       {
         html: "<strong class='govuk-tag govuk-tag--orange'>8</strong>"
-      },
+      },      
       {
-        html: "<strong class='govuk-tag govuk-tag--yellow'>0</strong>"
+        html: "<strong class='govuk-tag govuk-tag--blue'>14</strong>"
       }
     ],
         [
@@ -127,27 +131,28 @@
         text: "April"
       },
       {
-        html: "<strong class='govuk-tag govuk-tag--blue'>10</strong>"
+        html: "<strong class='govuk-tag govuk-tag--yellow'>12</strong>"
       },
-      {
+       {
         html: "<strong class='govuk-tag govuk-tag--orange'>13</strong>"
       },
       {
-        html: "<strong class='govuk-tag govuk-tag--yellow'>12</strong>"
+        html: "<strong class='govuk-tag govuk-tag--blue'>10</strong>"
       }
+      
     ],
       [
       {
         text: "May"
       },
       {
-        html: "<strong class='govuk-tag govuk-tag--blue'>6</strong>"
+        html: "<strong class='govuk-tag govuk-tag--yellow'>24</strong>"
       },
-      {
+       {
         html: "<strong class='govuk-tag govuk-tag--orange'>19</strong>"
       },
       {
-        html: "<strong class='govuk-tag govuk-tag--yellow'>24</strong>"
+        html: "<strong class='govuk-tag govuk-tag--blue'>6</strong>"
       }
     ],
     [
@@ -155,14 +160,15 @@
         text: "June"
       },
       {
-        html: "<strong class='govuk-tag govuk-tag--blue'>0</strong>"
+        html: "<strong class='govuk-tag govuk-tag--yellow'>9</strong>"
       },
       {
         html: "<strong class='govuk-tag govuk-tag--orange'>6</strong>"
       },
       {
-        html: "<strong class='govuk-tag govuk-tag--yellow'>9</strong>"
+        html: "<strong class='govuk-tag govuk-tag--blue'>0</strong>"
       }
+      
     ]
   ]
 }) }}
@@ -176,68 +182,43 @@
 
 
     <hr class="govuk-section-break govuk-section-break--l govuk-section-break--visible">
-          <h3 class="govuk-heading-l govuk-!-margin-top-9">Search the data</h3>
+          <h3 class="govuk-heading-l govuk-!-margin-top-9" id="search">Search the data</h3>
 
 
-<div class="" id="search">
+  <form class="form" action="/v3/plan-data#search" method="post">
+
+    <h3 class="govuk-heading-s">Filter by:</h3>
 
 
-  <h3 class="govuk-heading-s">Filter by:</h3>
+    {% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
 
+    {{ govukCheckboxes({
+      id: "document",
+      name: "document",
+      classes: "govuk-checkboxes--small",
+      fieldset: {
+        legend: {
+          text: ""
+        }
+      },
 
-{% from "govuk/components/checkboxes/macro.njk" import govukCheckboxes %}
+      items: [
+        {
+          value: "dpd",
+          text: "Development management document",
+          checked: (queries.document.includes("dpd"))
+        },
+        {
+          value: "Policy",
+          text: "Policy",
+          checked: (queries.document.includes("Policy"))
+          }
+      ]
+    }) }}
 
-{{ govukCheckboxes({
-  id: "document",
-  name: "document",
-  classes: "govuk-checkboxes--small",
-  fieldset: {
-    legend: {
-      text: ""
-    }
-  },
+    <div class="inline">
+      <h3 class="govuk-heading-s">Plan status</h3>
 
-  items: [
-    {
-      value: "dpd",
-      text: "Development management document",
-      checked: (queries.document == "dpd")
-    },
-    {
-      value: "Policy",
-      text: "Policy",
-      checked: (queries.document == "Policy")
-      }
-  ]
-}) }}
-
-{# {{ govukSelect({
-  id: "document",
-  name: "document",
-  label: {
-    text: ""
-  },
-  items: [
-
-    {
-      value: "dpd",
-      text: "Development management document",
-      selected: (queries.document == "dpd")
-    },
-    {
-      value: "Policy",
-      text: "Policy",
-      selected: (queries.document == "Policy")
-    }
-  ]
-}) }} #}
-
-</div>
-
-
-<div class="inline">
-  <h3 class="govuk-heading-s">Plan status</h3>
-<form class="form" action="/v3/plan-data" method="post">
 {{ govukSelect({
   id: "status-select",
   name: "status",
@@ -258,22 +239,22 @@
     {
       value: "preparation",
       text: "Preparation",
-      selected: (queries.status == "Preparation")
+      selected: (queries.status == "preparation")
     },
     {
       value: "publication",
       text: "Publication",
-      selected: (queries.status == "Publication")
+      selected: (queries.status == "publication")
     },
     {
       value: "submission",
       text: "Submission",
-      selected: (queries.status == "Submission")
+      selected: (queries.status == "submission")
     },
     {
       value: "Examination",
       text: "Examination",
-      selected: (queries.status == "Examination")
+      selected: (queries.status == "examination")
     },
     {
       value: "Adoption",
@@ -282,14 +263,43 @@
     }
   ]
 }) }}
+</div>
+    <div class="inline">
+
+
+  <h3 class="govuk-heading-s">Type</h3>
+
+{{ govukSelect({
+  id: "type-select",
+  name: "type",
+  label: {
+    text: ""
+  },
+  items: [
+    {
+      value: null,
+      text: "Please select",
+      selected: (queries.status == undefined)
+    },
+    {
+      value: "Strategic",
+      text: "Strategic",
+      selected: (queries.status == "strategic")
+    },
+      {
+      value: "Non-strategic",
+      text: "Non-strategic",
+      selected: (queries.status == "Non-strategic")
+    }
+  ]
+}) }}
 
 </div>
 
 
-
 <div class="inline">
 
-  <h3 class="govuk-heading-s">Plan type</h3>
+  <h3 class="govuk-heading-s">Document type</h3>
 
 
 {{ govukSelect({
@@ -373,32 +383,32 @@
     {
       value: "housing",
       text: "Housing",
-      selected: (queries.category == "Housing")
+      selected: (queries.category == "housing")
     },
     {
       value: "employment",
       text: "Employment",
-      selected: (queries.category == "Employment")
+      selected: (queries.category == "employment")
     },
     {
       value: "retail",
       text: "Retail",
-      selected: (queries.category == "Retail")
+      selected: (queries.category == "retail")
     },
     {
       value: "employment",
       text: "Employment",
-      selected: (queries.category == "Employment")
+      selected: (queries.category == "employment")
     },
     {
       value: "leisure",
       text: "Leisure",
-      selected: (queries.category == "Leisure")
+      selected: (queries.category == "leisure")
     },
     {
       value: "other commercial development",
       text: "Other Commercial Development",
-      selected: (queries.category == "Other Commercial Development")
+      selected: (queries.category == "other commercial development")
     },
     {
       value: "transport",
@@ -408,12 +418,12 @@
     {
       value: "telecommunications",
       text: "Telecommunications",
-      selected: (queries.category == "Telecommunications")
+      selected: (queries.category == "telecommunications")
     },
     {
       value: "security",
       text: "Security",
-      selected: (queries.category == "Security")
+      selected: (queries.category == "security")
     },
     {
       value: "security",
@@ -423,52 +433,52 @@
     {
       value: "waste management",
       text: "Waste management",
-      selected: (queries.category == "Waste management")
+      selected: (queries.category == "waste management")
     },
     {
       value: "water supply",
       text: "Water supply",
-      selected: (queries.category == "Water supply")
+      selected: (queries.category == "water supply")
     },
     {
       value: "waste water",
       text: "Waste water",
-      selected: (queries.category == "Waste water")
+      selected: (queries.category == "waste water")
     },
     {
       value: "flood risk",
       text: "Flood risk",
-      selected: (queries.category == "Flood risk")
+      selected: (queries.category == "flood risk")
     },
     {
       value: "coastal change management",
       text: "Coastal change management",
-      selected: (queries.category == "Coastal change management")
+      selected: (queries.category == "coastal change management")
     },
     {
       value: "provision of minerals and energy",
       text: "Provision of minerals and energy",
-      selected: (queries.category == "Provision of minerals and energy")
+      selected: (queries.category == "provision of minerals and energy")
     },
     {
       value: "community facilities",
       text: "Community facilities",
-      selected: (queries.category == "Community facilities")
+      selected: (queries.category == "community facilities")
     },
     {
       value: "conservation and enhancement of the natural environment",
       text: "Conservation and enhancement of the natural environment",
-      selected: (queries.category == "Conservation and enhancement of the natural environment")
+      selected: (queries.category == "conservation and enhancement of the natural environment")
     },
     {
       value: "conservation and enhancement of the built environment",
       text: "Conservation and enhancement of the built environment",
-      selected: (queries.category == "Conservation and enhancement of the built environment")
+      selected: (queries.category == "conservation and enhancement of the built environment")
     },
     {
       value: "conservation and enhancement of the historic environment",
       text: "Conservation and enhancement of the historic environment",
-      selected: (queries.category == "Conservation and enhancement of the historic environment")
+      selected: (queries.category == "conservation and enhancement of the historic environment")
     }
   ]
 }) }}
@@ -546,9 +556,6 @@
 {% endif %}
 
 </div>
-
-
-
 
 
     <div class="govuk-grid-column-full">
